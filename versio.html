@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire de Contact</title>
+</head>
+<body>
+
+<h2>Formulaire de Contact</h2>
+
+<div>
+  <label for="name">Nom:</label><br>
+  <input type="text" id="name" required><br>
+</div>
+<div>
+  <label for="email">Email:</label><br>
+  <input type="email" id="email" required><br>
+</div>
+<div>
+  <label for="message">Message:</label><br>
+  <textarea id="message" rows="4" required></textarea><br>
+</div>
+<button onclick="envoyerFormulaire()">Envoyer</button>
+
+<script>
+function envoyerFormulaire() {
+  // Récupérer les valeurs des champs
+  var name = document.getElementById("name").value;
+  var email = document.getElementById("email").value;
+  var message = document.getElementById("message").value;
+
+  // Créer un objet contenant les données du formulaire
+  var formData = {
+    name: name,
+    email: email,
+    message: message
+  };
+
+  // Effectuer la requête POST
+  fetch('https://n8n.oriatec.fr/webhook/cplr-versionning', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Erreur HTTP, statut : ' + response.status);
+    }
+    return response.text();
+  })
+  .then(data => {
+    console.log('Requête envoyée avec succès :', data);
+    alert('Requête envoyée avec succès !');
+  })
+  .catch(error => {
+    console.error('Erreur lors de l\'envoi de la requête :', error);
+    alert('Une erreur est survenue lors de l\'envoi de la requête.');
+  });
+}
+</script>
+
+</body>
+</html>
