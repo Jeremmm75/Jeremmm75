@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire de Contact</title>
+</head>
+<body>
+
+<h2>Formulaire de Contact</h2>
+
+<form id="contactForm">
+  <div>
+    <label for="nom">Nom:</label><br>
+    <input type="text" id="nom" name="nom" required><br>
+  </div>
+  <div>
+    <label for="prenom">Prénom:</label><br>
+    <input type="text" id="prenom" name="prenom" required><br>
+  </div>
+  <div>
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email" required><br>
+  </div>
+  <div>
+    <label for="message">Message:</label><br>
+    <textarea id="message" name="message" rows="4" required></textarea><br>
+  </div>
+  <div>
+    <label for="type">Type:</label><br>
+    <select id="type" name="type" required>
+      <option value="Tech">Tech</option>
+      <option value="Facture">Facture</option>
+      <option value="Dons">Dons</option>
+      <option value="Autre">Autre</option>
+    </select><br>
+  </div>
+  <button type="submit">Envoyer</button>
+</form>
+
+<script>
+document.getElementById("contactForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Empêcher le comportement par défaut du formulaire
+  
+  // Récupérer les valeurs des champs
+  var nom = document.getElementById("nom").value;
+  var prenom = document.getElementById("prenom").value;
+  var email = document.getElementById("email").value;
+  var message = document.getElementById("message").value;
+  var type = document.getElementById("type").value;
+
+  // Créer un objet JSON avec les données du formulaire
+  var formData = {
+    nom: nom,
+    prenom: prenom,
+    email: email,
+    message: message,
+    type: type
+  };
+
+  // Effectuer la requête POST en utilisant Fetch API
+  fetch('https://hook.eu2.make.com/7n2d8n54032t9upueb6nhupd7yrxk13a', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(function(response) {
+    if (!response.ok) {
+      throw new Error('Erreur HTTP, statut : ' + response.status);
+    }
+    return response.text();
+  })
+  .then(function(data) {
+    console.log('Requête envoyée avec succès :', data);
+    alert('Requête envoyée avec succès !');
+  })
+  .catch(function(error) {
+    console.error('Erreur lors de l\'envoi de la requête :', error);
+    alert('Une erreur est survenue lors de l\'envoi de la requête.');
+  });
+});
+</script>
+
+</body>
+</html>
